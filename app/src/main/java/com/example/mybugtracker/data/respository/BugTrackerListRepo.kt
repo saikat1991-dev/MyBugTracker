@@ -21,9 +21,9 @@ class BugTrackerListRepo @Inject constructor(private val networkService: Network
         }
     }
 
-    suspend fun insertBug(title: String,description : String) : Flow<BugInsertResponse>{
+    suspend fun insertBug(title: String,description : String,imageUrl : String) : Flow<BugInsertResponse>{
         return flow {
-            emit(networkService.insertDataToGSheet("create",title,description,"https://dummyimage.com/550x350/3399ff/000"))
+            emit(networkService.insertDataToGSheet("create",title,description,imageUrl))
         }.map {
             it
         }

@@ -1,7 +1,6 @@
 package com.example.mybugtracker.ui.activity
 
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -23,12 +22,12 @@ import com.example.mybugtracker.R
 
 @Composable
 fun CustomDialog(
-    onCameraClick:() -> Unit,
-    onGalleryClick:() -> Unit
+    onCameraClick: () -> Unit,
+    onGalleryClick: () -> Unit,
+    dismissDialog:() -> Unit
 ){
     Dialog(onDismissRequest = {
-        onCameraClick()
-        onGalleryClick()
+        dismissDialog()
     }, properties = DialogProperties(
         usePlatformDefaultWidth = false
     )
@@ -39,15 +38,15 @@ fun CustomDialog(
             ),
             shape = RoundedCornerShape(15.dp),
             modifier = Modifier
-                .fillMaxWidth(0.95f)
+                .fillMaxWidth(0.55f)
         ) {
-            Column(modifier = Modifier
-                .fillMaxWidth()
-                .padding(15.dp),
-                verticalArrangement = Arrangement.spacedBy(25.dp)
-                ) {
-            }
-            Row(modifier = Modifier.fillMaxWidth(),
+//            Column(modifier = Modifier
+//                .fillMaxWidth()
+//                .padding(15.dp),
+//                verticalArrangement = Arrangement.spacedBy(25.dp)
+//                ) {
+//            }
+            Row(modifier = Modifier.fillMaxWidth().padding(15.dp),
                 horizontalArrangement = Arrangement.spacedBy(30.dp),
                 verticalAlignment = Alignment.CenterVertically
                 ) {

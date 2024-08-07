@@ -3,11 +3,9 @@ package com.example.mybugtracker.ui.activity
 import android.annotation.SuppressLint
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
-import androidx.appcompat.app.AppCompatActivity
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
@@ -54,8 +52,8 @@ class BugItemListActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         injectDependency()
         super.onCreate(savedInstanceState)
+        bugTrackerViewModel.fetchBugItems()
         setContent {
-
             MyBugTrackerTheme {
                 Surface(
                     modifier = Modifier.fillMaxSize(),
@@ -63,35 +61,49 @@ class BugItemListActivity : ComponentActivity() {
                 ) {
                     Scaffold(
                         topBar = {
-                        TopAppBar(
-                            colors = TopAppBarColors(Color.Gray,Color.White,Color.White,Color.White,Color.Unspecified),
-                            title = {
-                                Text(
-                                    text = "Grid View",
-                                    modifier = Modifier.fillMaxWidth(),
-                                    textAlign = TextAlign.Center,
-                                    color = Color.White
-                                )
-                            },
-                            actions = {
-                                IconButton(
-                                    onClick = {
-                                       startActivity(Intent(this@BugItemListActivity,InsertBugActivity::class.java))
-                                    }
-                                ) {
-                                    Icon(Icons.Filled.Add,
-                                        contentDescription = null,
-                                        tint = Color.White
+                            TopAppBar(
+                                colors = TopAppBarColors(
+                                    Color.LightGray,
+                                    Color.White,
+                                    Color.White,
+                                    Color.White,
+                                    Color.Unspecified
+                                ),
+                                title = {
+                                    Text(
+                                        text = "BugIt",
+                                        modifier = Modifier.fillMaxWidth(),
+                                        textAlign = TextAlign.Center,
+                                        color = Color.White
+                                    )
+                                },
+                                actions = {
+                                    IconButton(
+                                        onClick = {
+                                            startActivity(
+                                                Intent(
+                                                    this@BugItemListActivity,
+                                                    InsertBugActivity::class.java
+                                                )
+                                            )
+                                        }
+                                    ) {
+                                        Icon(
+                                            Icons.Filled.Add,
+                                            contentDescription = null,
+                                            tint = Color.White
                                         )
+                                    }
                                 }
-                            }
                             )
-                    }, content = {
-                        Column(modifier = Modifier
-                            .padding(it)
-                            .fillMaxSize()) {
-                            SetObserver()
-                        }
+                        }, content = {
+                            Column(
+                                modifier = Modifier
+                                    .padding(it)
+                                    .fillMaxSize()
+                            ) {
+                                SetObserver()
+                            }
 
                         })
                 }
@@ -100,31 +112,35 @@ class BugItemListActivity : ComponentActivity() {
     }
 
 
-
     @SuppressLint("SuspiciousIndentation")
     @Composable
-    private fun SetObserver(){
-        val bugItems : State<Resource<List<BugItemResponse>>> = bugTrackerViewModel.bugItemList.collectAsState()
-                    when(bugItems.value.status){
-                        Status.SUCCESS -> {
-                            bugItems.value.data?.let { bugItemList ->
-                                Log.i("saikat","BugItemList $bugItemList")
-                                ShowButItemScree(bugItemList)
-                            }
-                        }
+    private fun SetObserver() {
+        val bugItems: State<Resource<List<BugItemResponse>>> =
+            bugTrackerViewModel.bugItemList.collectAsState()
+        when (bugItems.value.status) {
+            Status.SUCCESS -> {
+                bugItems.value.data?.let { bugItemList ->
+                    ShowButItemScree(bugItemList)
+                }
+            }
 
-                        Status.ERROR -> {
-                            Toast.makeText(this@BugItemListActivity, bugItems.value.message, Toast.LENGTH_LONG)
-                                .show()
-                        }
-                        Status.LOADING -> {
-                            ShowProgressBar()
-                        }
-                    }
+            Status.ERROR -> {
+                Toast.makeText(this@BugItemListActivity, bugItems.value.message, Toast.LENGTH_LONG)
+                    .show()
+            }
+
+            Status.LOADING -> {
+                ShowProgressBar()
+            }
+
+            Status.DO_NOTHING -> {
+
+            }
+        }
     }
 
     @Composable
-    private fun ShowProgressBar(){
+    private fun ShowProgressBar() {
         Column(
             modifier = Modifier.fillMaxSize(),
             horizontalAlignment = Alignment.CenterHorizontally,

@@ -14,5 +14,9 @@ data class Resource<out T>(val status : Status, val data : T? , val message : St
         fun <T> loading() :Resource<T> {
             return Resource(Status.LOADING,null,null)
         }
+
+        fun <T> doNothing() : Resource<T> {
+            return Resource(Status.DO_NOTHING,null,null)
+        }
     }
 }

@@ -2,6 +2,7 @@ plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.jetbrains.kotlin.android)
     kotlin("kapt")
+    alias(libs.plugins.google.gms.google.services)
 }
 
 android {
@@ -70,6 +71,7 @@ dependencies {
     implementation(libs.google.dagger.v242)
     implementation(libs.coil.compose)
     implementation(libs.dhaval2404.imagepicker)
+    implementation(libs.firebase.storage)
     kapt(libs.dagger.compiler)
     implementation(libs.coil.compose)
     implementation(libs.squareup.retrofit)
