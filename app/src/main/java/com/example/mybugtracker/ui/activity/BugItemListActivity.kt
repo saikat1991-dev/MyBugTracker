@@ -30,9 +30,11 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import com.example.mybugtracker.BugTrackerApplication
+import com.example.mybugtracker.R
 import com.example.mybugtracker.data.model.BugItemResponse
 import com.example.mybugtracker.di.component.DaggerActivityComponent
 import com.example.mybugtracker.di.module.ActivityModule
@@ -71,7 +73,7 @@ class BugItemListActivity : ComponentActivity() {
                                 ),
                                 title = {
                                     Text(
-                                        text = "BugIt",
+                                        text = stringResource(id = R.string.app_name),
                                         modifier = Modifier.fillMaxWidth(),
                                         textAlign = TextAlign.Center,
                                         color = Color.White
@@ -137,23 +139,6 @@ class BugItemListActivity : ComponentActivity() {
 
             }
         }
-    }
-
-    @Composable
-    private fun ShowProgressBar() {
-        Column(
-            modifier = Modifier.fillMaxSize(),
-            horizontalAlignment = Alignment.CenterHorizontally,
-            verticalArrangement = Arrangement.Center
-        ) {
-            CircularProgressIndicator(
-                modifier = Modifier
-                    .width(64.dp),
-                color = MaterialTheme.colorScheme.secondary,
-                trackColor = MaterialTheme.colorScheme.surfaceVariant
-            )
-        }
-
     }
 
     private fun injectDependency() {

@@ -11,14 +11,14 @@ import dagger.Provides
 
 
 @Module
-class ActivityModule(private val activity : ComponentActivity) {
+class ActivityModule(private val activity: ComponentActivity) {
 
     @Provides
-    fun provideBugListViewModel(bugTrackerListRepo: BugTrackerListRepo) :BugListViewModel{
+    fun provideBugListViewModel(bugTrackerListRepo: BugTrackerListRepo): BugListViewModel {
         return ViewModelProvider(activity,
-            ViewModelProviderFactory(BugListViewModel::class){
+            ViewModelProviderFactory(BugListViewModel::class) {
                 BugListViewModel(bugTrackerListRepo)
             }
-            )[BugListViewModel::class.java]
+        )[BugListViewModel::class.java]
     }
 }

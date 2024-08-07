@@ -5,7 +5,6 @@ import android.annotation.SuppressLint
 import android.content.Context
 import android.content.pm.PackageManager
 import android.net.Uri
-import android.util.Log
 import android.widget.Toast
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
@@ -24,6 +23,7 @@ import androidx.compose.material3.Button
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -58,7 +58,7 @@ fun InsertBugScreen(bugListViewModel: BugListViewModel) {
     var description by remember { mutableStateOf("") }
     val galleryImageUri = remember { mutableStateOf<Uri?>(null) }
 
-    val launcher =
+    val galleryLauncher =
         rememberLauncherForActivityResult(ActivityResultContracts.GetContent()) { uri ->
             galleryImageUri.value = uri
         }
@@ -144,23 +144,9 @@ fun InsertBugScreen(bugListViewModel: BugListViewModel) {
             }
             Spacer(modifier = Modifier.padding(6.dp))
             Button(onClick = {
-                when (bugListViewModel.imageType) {
-                    ImageType.IMAGE_GALLERY -> {
-                        galleryImageUri.value?.let { bugListViewModel.uploadImageToFireStorage(it) }
-                            ?: kotlin.run {
-                                Toast.makeText(context, "Pick any image", Toast.LENGTH_SHORT).show()
-                            }
-                    }
-
-                    ImageType.IMAGE_CAMERA -> {
-                        cameraImageUri.value.let { bugListViewModel.uploadImageToFireStorage(it) }
-                    }
-
-                    ImageType.NONE -> {
-                        Toast.makeText(context, "Pick any image", Toast.LENGTH_SHORT).show()
-                    }
-                }
-
+                callUploadToFirebaseStorage(
+                    bugListViewModel, context, galleryImageUri, cameraImageUri
+                )
             }) {
                 Text(text = stringResource(id = R.string.upload_image))
             }
@@ -201,7 +187,7 @@ fun InsertBugScreen(bugListViewModel: BugListViewModel) {
                 onGalleryClick = {
                     bugListViewModel.imageType = ImageType.IMAGE_GALLERY
                     bugListViewModel.onDismissDialog()
-                    launcher.launch("image/*")
+                    galleryLauncher.launch("image/*")
                 },
                 dismissDialog = {
                     bugListViewModel.onDismissDialog()
@@ -216,6 +202,30 @@ fun InsertBugScreen(bugListViewModel: BugListViewModel) {
     }
 
 
+}
+
+fun callUploadToFirebaseStorage(
+    bugListViewModel: BugListViewModel,
+    context: Context,
+    galleryImageUri: MutableState<Uri?>,
+    cameraImageUri: MutableState<Uri>
+) {
+    when (bugListViewModel.imageType) {
+        ImageType.IMAGE_GALLERY -> {
+            galleryImageUri.value?.let { bugListViewModel.uploadImageToFireStorage(it) }
+                ?: kotlin.run {
+                    Toast.makeText(context, "Pick any image", Toast.LENGTH_SHORT).show()
+                }
+        }
+
+        ImageType.IMAGE_CAMERA -> {
+            cameraImageUri.value.let { bugListViewModel.uploadImageToFireStorage(it) }
+        }
+
+        ImageType.NONE -> {
+            Toast.makeText(context, "Pick any image", Toast.LENGTH_SHORT).show()
+        }
+    }
 }
 
 @SuppressLint("SimpleDateFormat")
