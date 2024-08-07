@@ -34,6 +34,7 @@ import androidx.compose.ui.graphics.FilterQuality
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.core.content.ContextCompat
@@ -59,7 +60,6 @@ fun InsertBugScreen(bugListViewModel: BugListViewModel) {
 
     val launcher =
         rememberLauncherForActivityResult(ActivityResultContracts.GetContent()) { uri ->
-            Log.i("saikat", "ImageUri $uri")
             galleryImageUri.value = uri
         }
     val file = context.createFileImage()
@@ -73,7 +73,6 @@ fun InsertBugScreen(bugListViewModel: BugListViewModel) {
     val cameraLauncher =
         rememberLauncherForActivityResult(ActivityResultContracts.TakePicture()) {
             cameraImageUri.value = cameraUri
-            Log.i("saikat", "captureImageUri ${cameraImageUri.value}")
         }
 
     val permissionLauncher =
@@ -99,18 +98,18 @@ fun InsertBugScreen(bugListViewModel: BugListViewModel) {
                 .width(200.dp)
         )
 
-        Text(text = "Create Bug", fontWeight = FontWeight.Bold)
+        Text(text = stringResource(id = R.string.create_bug), fontWeight = FontWeight.Bold)
         OutlinedTextField(value = title, onValueChange = {
             title = it
         }, label = {
-            Text(text = "Title")
+            Text(text = stringResource(id = R.string.title))
         })
         Spacer(modifier = Modifier.padding(top = 6.dp))
 
         OutlinedTextField(value = description, onValueChange = {
             description = it
         }, label = {
-            Text(text = "Description")
+            Text(text = stringResource(id = R.string.description))
         }, modifier = Modifier
             .height(80.dp)
             .padding(start = 10.dp, end = 10.dp)
@@ -141,7 +140,7 @@ fun InsertBugScreen(bugListViewModel: BugListViewModel) {
             Button(onClick = {
                 bugListViewModel.onPickImageClick()
             }) {
-                Text(text = "Pick Image")
+                Text(text = stringResource(id = R.string.pick_image))
             }
             Spacer(modifier = Modifier.padding(6.dp))
             Button(onClick = {
@@ -162,9 +161,8 @@ fun InsertBugScreen(bugListViewModel: BugListViewModel) {
                     }
                 }
 
-                Log.i("saikat", "ImageUrl ${galleryImageUri.value}")
             }) {
-                Text(text = "Upload Image")
+                Text(text = stringResource(id = R.string.upload_image))
             }
         }
 
@@ -180,13 +178,12 @@ fun InsertBugScreen(bugListViewModel: BugListViewModel) {
                     Toast.makeText(context, "Pick any image", Toast.LENGTH_SHORT).show()
                 } else {
                     bugListViewModel.insertBugItems(title, description, url)
-                    Log.i("saikat", "getImageUrl $url")
                 }
             }, modifier = Modifier
                 .fillMaxWidth()
                 .padding(10.dp)
         ) {
-            Text(text = "Add")
+            Text(text = stringResource(id = R.string.add))
         }
 
         if (bugListViewModel.isDialogShow) {

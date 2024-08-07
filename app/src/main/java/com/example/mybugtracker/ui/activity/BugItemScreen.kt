@@ -15,6 +15,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
 import com.example.mybugtracker.data.model.BugItemResponse
@@ -39,7 +40,12 @@ fun BugListItem(bugItem : BugItemResponse){
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.Center
         ) {
-            AsyncImage(model = bugItem.imageUrl, contentDescription = "", modifier = Modifier.weight(0.8f))
+            AsyncImage(
+                model = bugItem.imageUrl,
+                contentDescription = "",
+                modifier = Modifier.weight(0.8f),
+                contentScale = ContentScale.FillWidth
+                )
             Spacer(modifier = Modifier
                 .height(6.dp)
                 .fillMaxWidth())

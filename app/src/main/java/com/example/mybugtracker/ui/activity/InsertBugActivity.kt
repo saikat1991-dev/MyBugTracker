@@ -1,7 +1,6 @@
 package com.example.mybugtracker.ui.activity
 
 import android.os.Bundle
-import android.util.Log
 import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
@@ -85,8 +84,6 @@ class InsertBugActivity : ComponentActivity() {
                 url?.let {
                     bugListViewModel.setUploadedImageUrl(it)
                 }
-
-                Log.i("saikat", "success url $url")
             }
 
             Status.ERROR -> {

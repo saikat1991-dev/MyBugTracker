@@ -40,12 +40,6 @@ fun CustomDialog(
             modifier = Modifier
                 .fillMaxWidth(0.55f)
         ) {
-//            Column(modifier = Modifier
-//                .fillMaxWidth()
-//                .padding(15.dp),
-//                verticalArrangement = Arrangement.spacedBy(25.dp)
-//                ) {
-//            }
             Row(modifier = Modifier.fillMaxWidth().padding(15.dp),
                 horizontalArrangement = Arrangement.spacedBy(30.dp),
                 verticalAlignment = Alignment.CenterVertically
@@ -69,7 +63,6 @@ fun CustomDialog(
                         .clickable { onGalleryClick() }
                 )
             }
-
         }
 
     }
